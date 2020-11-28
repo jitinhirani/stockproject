@@ -57,98 +57,6 @@ public class StockExcelImport {
 	
 	private static String tempSheetName = null;
 
-	public StockItemRepository getStockItemRepository() {
-		return stockItemRepository;
-	}
-
-	public void setStockItemRepository(StockItemRepository stockItemRepository) {
-		this.stockItemRepository = stockItemRepository;
-	}
-
-	public StockItemTypeRepository getStockItemTypeRepository() {
-		return stockItemTypeRepository;
-	}
-
-	public void setStockItemTypeRepository(StockItemTypeRepository stockItemTypeRepository) {
-		this.stockItemTypeRepository = stockItemTypeRepository;
-	}
-
-	public SourceRepository getSourceRepository() {
-		return sourceRepository;
-	}
-
-	public void setSourceRepository(SourceRepository sourceRepository) {
-		this.sourceRepository = sourceRepository;
-	}
-
-	public StockTypeRepository getStockTypeRepository() {
-		return stockTypeRepository;
-	}
-
-	public void setStockTypeRepository(StockTypeRepository stockTypeRepository) {
-		this.stockTypeRepository = stockTypeRepository;
-	}
-
-	public DepartmentRepository getDepartmentRepository() {
-		return departmentRepository;
-	}
-
-	public void setDepartmentRepository(DepartmentRepository departmentRepository) {
-		this.departmentRepository = departmentRepository;
-	}
-
-	public CategoryRepository getCategoryRepository() {
-		return categoryRepository;
-	}
-
-	public void setCategoryRepository(CategoryRepository categoryRepository) {
-		this.categoryRepository = categoryRepository;
-	}
-
-	public static void main(String[] args) {
-//		File file = new File("C:\\Stock_Import_Example.xls");
-//		File file = new File(".\\sampleData\\Correction_from_STOCK 2009 final list-20MARCH2011.xls");
-//		File file = new File(".\\sampleData\\STOCK 2012 - Jitin 240711.xls");
-//		File file = new File(".\\sampleData\\STOCK 2012 - Jitin 23.06.2012.xls");
-//		File file = new File(".\\sampleData\\stock1- Jitin 23.06.2012.xls");
-//		File file = new File(".\\sampleData\\stock2 - Jitin 22.08.2012.xls");
-//		File file = new File(".\\finalData\\stock1- Jitin 23.06.2012.xls");
-		
-//		File file = new File(".\\finalData\\Sample Stock Data.xls");
-		
-		File file = new File("\\finalData");
-		System.out.println(file.getAbsolutePath());
-		
-		// TODO: CAUTION-This will delete all stock items from database before starting import
-		StockExcelImport stockImport = new StockExcelImport();
-		StockItemRepository stockRepo = stockImport.getStockItemRepository();
-		if(stockRepo != null) {
-			stockRepo.deleteAll();
-			stockRepo.resetSequence();
-		}
-		
-		// if(file != null && file.exists() && file.isDirectory()) {
-		// 	File[] importFiles = file.listFiles();
-			
-		// 	if(importFiles != null && importFiles.length > 0) {
-		// 		for(File importFile : importFiles) {
-		// 			System.out.println(importFile.getAbsolutePath());
-		// 			if (importFile != null && importFile.exists() && importFile.isFile()) {
-		// 				if(importFile.getName().contains("Stock as on today")) {
-		// 					StockItemType regular = stockImport.getStockItemTypeRepository().findByName(StockItemUtil.STOCK_ITEM_TYPE_REGULAR);
-		// 					stockImport.importStockFromExcel(importFile, regular);
-		// 				} else {
-		// 					StockItemType loan = stockImport.getStockItemTypeRepository().findByName(StockItemUtil.STOCK_ITEM_TYPE_LOAN);
-		// 					stockImport.importStockFromExcel(importFile, loan);
-		// 				}
-		// 			} else {
-		// 				System.out.println("Problems while reading file: " + importFile.getName());
-		// 			}
-		// 		}
-		// 	}
-		// }
-	}
-
 	public boolean importStockFromExcel(File excelFile, StockItemType stockItemType) {
 		if (excelFile != null && excelFile.exists() && excelFile.isFile()) {
 			try {
@@ -203,58 +111,13 @@ public class StockExcelImport {
 		return true;
 	}
 	
-// 	public boolean importStockFromExcel(InputStream inputStream, String itemType) {
-// 		StockExcelImport stockImport = new StockExcelImport();
-// 		if (inputStream != null) {
-// 			try {
-// 				Workbook workbook = WorkbookFactory.create(inputStream);
-// 				IStockItemDAO stockItemDAO = StockAppDAOFactory.getStockItemDAO();
-// 				if (workbook != null && stockItemDAO != null) {
-// 					int countOfImportedStockItems = 0;
-// 					for(int sheetNum = 0; sheetNum < workbook.getNumberOfSheets(); sheetNum++) {
-// 						Sheet sheet = workbook.getSheetAt(sheetNum);
-// 						if (sheet != null) {
-							
-// 							List<Cell> headerCellList = stockImport.getHeaderCells(sheet);
-// 							int firstRowNumWithData = -1;
-// 							if (stockImport.firstRowNumWithData > 0) {
-// 								firstRowNumWithData = stockImport.firstRowNumWithData;
-// 							}
-
-// 							if (headerCellList != null && !headerCellList.isEmpty() && firstRowNumWithData > 0L) {
-// 								for (int rowNum = firstRowNumWithData; rowNum <= sheet.getLastRowNum(); rowNum++) {
-// 									Row row = sheet.getRow(rowNum);
-// 									if (row != null) {
-// //										try {
-// 										StockItem stockItem = stockImport.createStockItem(headerCellList, row, itemType);
-// 										if (stockItem != null) {
-// 											stockItemDAO.addStockItem(stockItem);
-// 											countOfImportedStockItems++;
-// 										}
-// //										} catch(Exception e) {
-// //											e.printStackTrace();
-// //											break;
-// //										}
-// 									}
-// 								}
-// 							}
-// 						}
-// 					}
-					
-// 					System.out.println("------------------- Total Imported Records --> " + countOfImportedStockItems + " -----------------------\n\n");
-// 				}
-// 			} catch (InvalidFormatException e) {
-// 				e.printStackTrace();
-// 				return false;
-// 			} catch (IOException e) {
-// 				e.printStackTrace();
-// 				return false;
-// 			}
-// 		}
-
-// 		return true;
-// 	}
-
+	/**
+	 * Create single stock item row from the sheet row
+	 * @param headerCellList
+	 * @param row
+	 * @param stockItemType
+	 * @return
+	 */
 	private StockItem createStockItem(List<Cell> headerCellList, Row row, StockItemType stockItemType) //	throws Exception
 	{
 		StockItem stockItem = null;
@@ -459,6 +322,11 @@ public class StockExcelImport {
 		return stockItem;
 	}
 
+	/**
+	 * Get Header Cells from the sheet
+	 * @param sheet
+	 * @return
+	 */
 	private List<Cell> getHeaderCells(Sheet sheet) {
 		List<Cell> headerCells = new ArrayList<Cell>();
 		Row rowData = null;
@@ -501,5 +369,149 @@ public class StockExcelImport {
 		}
 		return headerCells;
 	}
+	
+	public StockItemRepository getStockItemRepository() {
+		return stockItemRepository;
+	}
+
+	public void setStockItemRepository(StockItemRepository stockItemRepository) {
+		this.stockItemRepository = stockItemRepository;
+	}
+
+	public StockItemTypeRepository getStockItemTypeRepository() {
+		return stockItemTypeRepository;
+	}
+
+	public void setStockItemTypeRepository(StockItemTypeRepository stockItemTypeRepository) {
+		this.stockItemTypeRepository = stockItemTypeRepository;
+	}
+
+	public SourceRepository getSourceRepository() {
+		return sourceRepository;
+	}
+
+	public void setSourceRepository(SourceRepository sourceRepository) {
+		this.sourceRepository = sourceRepository;
+	}
+
+	public StockTypeRepository getStockTypeRepository() {
+		return stockTypeRepository;
+	}
+
+	public void setStockTypeRepository(StockTypeRepository stockTypeRepository) {
+		this.stockTypeRepository = stockTypeRepository;
+	}
+
+	public DepartmentRepository getDepartmentRepository() {
+		return departmentRepository;
+	}
+
+	public void setDepartmentRepository(DepartmentRepository departmentRepository) {
+		this.departmentRepository = departmentRepository;
+	}
+
+	public CategoryRepository getCategoryRepository() {
+		return categoryRepository;
+	}
+
+	public void setCategoryRepository(CategoryRepository categoryRepository) {
+		this.categoryRepository = categoryRepository;
+	}
+
+//	public static void main(String[] args) {
+//		File file = new File("C:\\Stock_Import_Example.xls");
+//		File file = new File(".\\sampleData\\Correction_from_STOCK 2009 final list-20MARCH2011.xls");
+//		File file = new File(".\\sampleData\\STOCK 2012 - Jitin 240711.xls");
+//		File file = new File(".\\sampleData\\STOCK 2012 - Jitin 23.06.2012.xls");
+//		File file = new File(".\\sampleData\\stock1- Jitin 23.06.2012.xls");
+//		File file = new File(".\\sampleData\\stock2 - Jitin 22.08.2012.xls");
+//		File file = new File(".\\finalData\\stock1- Jitin 23.06.2012.xls");
+		
+//		File file = new File(".\\finalData\\Sample Stock Data.xls");
+		
+//		File file = new File("\\finalData");
+//		System.out.println(file.getAbsolutePath());
+		
+		// TODO: CAUTION-This will delete all stock items from database before starting import
+//		StockExcelImport stockImport = new StockExcelImport();
+//		StockItemRepository stockRepo = stockImport.getStockItemRepository();
+//		if(stockRepo != null) {
+//			stockRepo.deleteAll();
+//			stockRepo.resetSequence();
+//		}
+		
+		// if(file != null && file.exists() && file.isDirectory()) {
+		// 	File[] importFiles = file.listFiles();
+			
+		// 	if(importFiles != null && importFiles.length > 0) {
+		// 		for(File importFile : importFiles) {
+		// 			System.out.println(importFile.getAbsolutePath());
+		// 			if (importFile != null && importFile.exists() && importFile.isFile()) {
+		// 				if(importFile.getName().contains("Stock as on today")) {
+		// 					StockItemType regular = stockImport.getStockItemTypeRepository().findByName(StockItemUtil.STOCK_ITEM_TYPE_REGULAR);
+		// 					stockImport.importStockFromExcel(importFile, regular);
+		// 				} else {
+		// 					StockItemType loan = stockImport.getStockItemTypeRepository().findByName(StockItemUtil.STOCK_ITEM_TYPE_LOAN);
+		// 					stockImport.importStockFromExcel(importFile, loan);
+		// 				}
+		// 			} else {
+		// 				System.out.println("Problems while reading file: " + importFile.getName());
+		// 			}
+		// 		}
+		// 	}
+		// }
+//	}
+	
+// 	public boolean importStockFromExcel(InputStream inputStream, String itemType) {
+//		StockExcelImport stockImport = new StockExcelImport();
+//		if (inputStream != null) {
+//			try {
+//				Workbook workbook = WorkbookFactory.create(inputStream);
+//				IStockItemDAO stockItemDAO = StockAppDAOFactory.getStockItemDAO();
+//				if (workbook != null && stockItemDAO != null) {
+//					int countOfImportedStockItems = 0;
+//					for(int sheetNum = 0; sheetNum < workbook.getNumberOfSheets(); sheetNum++) {
+//						Sheet sheet = workbook.getSheetAt(sheetNum);
+//						if (sheet != null) {
+						
+//							List<Cell> headerCellList = stockImport.getHeaderCells(sheet);
+//							int firstRowNumWithData = -1;
+//							if (stockImport.firstRowNumWithData > 0) {
+//								firstRowNumWithData = stockImport.firstRowNumWithData;
+//							}
+
+//							if (headerCellList != null && !headerCellList.isEmpty() && firstRowNumWithData > 0L) {
+//								for (int rowNum = firstRowNumWithData; rowNum <= sheet.getLastRowNum(); rowNum++) {
+//									Row row = sheet.getRow(rowNum);
+//									if (row != null) {
+////										try {
+//										StockItem stockItem = stockImport.createStockItem(headerCellList, row, itemType);
+//										if (stockItem != null) {
+//											stockItemDAO.addStockItem(stockItem);
+//											countOfImportedStockItems++;
+//										}
+////										} catch(Exception e) {
+////											e.printStackTrace();
+////											break;
+////										}
+//									}
+//								}
+//							}
+//						}
+//					}
+				
+//					System.out.println("------------------- Total Imported Records --> " + countOfImportedStockItems + " -----------------------\n\n");
+//				}
+//			} catch (InvalidFormatException e) {
+//				e.printStackTrace();
+//				return false;
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				return false;
+//			}
+//		}
+
+//		return true;
+//	}
 
 }

@@ -1,9 +1,15 @@
 --CREATE DATABASE stockdb;
 
-ALTER TABLE STOCKITEM ALTER COLUMN ID RESTART WITH 1;
-
+-- DELETE ALL ENTRIES FROM STOCKITEM TABLE ---- START
 select min(id), max(id), count(*) from stockitem;
+DELETE FROM STOCKITEM WHERE ID>0;
+ALTER TABLE STOCKITEM ALTER COLUMN ID RESTART WITH 1;
+-- DELETE ALL ENTRIES FROM STOCKITEM TABLE ---- END
 
+-- update department set name='Medical' where name='Dispensary';
+-- update department set name='Artwork' where name='Banner & Painting';
+
+/*
 DROP TABLE IF EXISTS billionaires;
  
 CREATE TABLE billionaires (
@@ -17,7 +23,7 @@ INSERT INTO billionaires (first_name, last_name, career) VALUES
   ('Aliko', 'Dangote', 'Billionaire Industrialist'),
   ('Bill', 'Gates', 'Billionaire Tech Entrepreneur'),
   ('Folrunsho', 'Alakija', 'Billionaire Oil Magnate');
-
+*/
 -- REGULAR or LOAN Type
 CREATE TABLE stockitemtype (
   id INT AUTO_INCREMENT  PRIMARY KEY,
@@ -100,7 +106,7 @@ INSERT INTO category(id, name) VALUES (17,'Sound');
 
 INSERT INTO department(id, name) values(1, 'Accommodation');
 INSERT INTO department(id, name) values(2, 'Adam Block-Main Office');
-INSERT INTO department(id, name) values(3, 'Banner & Painting');
+INSERT INTO department(id, name) values(3, 'Artwork');
 INSERT INTO department(id, name) values(4, 'BookStall');
 INSERT INTO department(id, name) values(5, 'Canteen');
 INSERT INTO department(id, name) values(6, 'Carpentary');
@@ -109,7 +115,7 @@ INSERT INTO department(id, name) values(8, 'Central Store');
 INSERT INTO department(id, name) values(9, 'Chhabeel');
 INSERT INTO department(id, name) values(10, 'Coupon Stall');
 INSERT INTO department(id, name) values(11, 'Darshan Sewa');
-INSERT INTO department(id, name) values(12, 'Dispensary');
+INSERT INTO department(id, name) values(12, 'Medical');
 INSERT INTO department(id, name) values(13, 'Electric');
 INSERT INTO department(id, name) values(14, 'Engineering');
 INSERT INTO department(id, name) values(15, 'Fire');

@@ -52,10 +52,10 @@ public class StockItemController {
         System.out.println(file.getAbsolutePath());
 		
 		// TODO: CAUTION-This will delete all stock items from database before starting import
-		StockItemRepository stockRepo = stockExcelImport.getStockItemRepository();
-		if(stockRepo != null) {
-			stockRepo.deleteAll();
-		}
+//		if(stockItemRepository != null) {
+//			stockItemRepository.deleteAll();
+//			stockItemRepository.flush();
+//		}
 		
 		if(file != null && file.exists() && file.isDirectory()) {
 			File[] importFiles = file.listFiles();
@@ -82,34 +82,4 @@ public class StockItemController {
         return getStockItemById(Long.valueOf("1"));
     }
 
-    /*
-    @PostMapping("/departments")
-    public Department createDepartment(@Validated @RequestBody Department department) {
-        return departmentRepository.save(department);
-    }
-
-    @PutMapping("/departments/{id}")
-    public ResponseEntity<Department> updateDepartment(@PathVariable(value = "id") Long departmentId,
-            @Validated @RequestBody Department departmentDetails) throws ResourceNotFoundException {
-
-        Department department = departmentRepository.findById(departmentId).orElseThrow(
-                () -> new ResourceNotFoundException("Department not found for this id :: " + departmentId));
-
-        department.setName(departmentDetails.getName());
-        final Department updatedDepartment = departmentRepository.save(department);
-        return ResponseEntity.ok(updatedDepartment);
-    }
-
-    @DeleteMapping("/departments/{id}")
-    public Map<String, Boolean> deleteEmployee(@PathVariable(value = "id") Long departmentId)
-            throws ResourceNotFoundException {
-        Department department = departmentRepository.findById(departmentId).orElseThrow(
-                () -> new ResourceNotFoundException("Department not found for this id :: " + departmentId));
-
-        departmentRepository.delete(department);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
-    }
-    */
 }
